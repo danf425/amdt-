@@ -2,6 +2,7 @@ apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: aws-ic
+  namespace: abc
 spec:
   maxReplicas: 10
   minReplicas: 1
