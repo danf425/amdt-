@@ -18,4 +18,4 @@ spec:
         - name: image-pull-secret
       serviceAccountName: morganfundsa
       containers:
-        - name: ${app-label}
+        - name: aws-ic
