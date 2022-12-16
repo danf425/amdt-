@@ -1,7 +1,7 @@
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: <+pipeline.stages.DeployDEV.variables.app_label>
+  name: aws-ic
 spec:
   maxReplicas: 10
   minReplicas: 1
