@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ${app-label}
+  name: aws-ic
 spec:
   selector:
     matchLabels:
-      app: ${app-label}
+      app: aws-ic
   replicas: 1
   template:
     metadata:
       labels:
-        app: ${app-label}
+        app: aws-ic
     spec:
       securityContext:
         runAsUser: 999
@@ -18,7 +18,7 @@ spec:
         - name: image-pull-secret
       serviceAccountName: morganfundsa
       containers:
-        - name: ${app-label}
+        - name: aws-ic
           image: app-image
           resources:
             requests:
@@ -32,7 +32,7 @@ spec:
           env:
             # JVM Memory Settings for 1Gi total container memory. Bump the -Xmx setting to match any increase to container memory.
             - name: JAVA_OPTS
-              value: -XX:MaxDirectMemorySize=10M -XX:MaxMetaspaceSize=512M -XX:ReservedCodeCacheSize=240M -Xss1M -Xmx2048M  -Xms1024M  -Ddd.service.name=${app-label} -Ddd.trace.global.tags=env:${environment} -Ddd.jmxfetch.enabled=TRUE -Dserver.tomcat.max.threads=800
+              value: -XX:MaxDirectMemorySize=10M -XX:MaxMetaspaceSize=512M -XX:ReservedCodeCacheSize=240M -Xss1M -Xmx2048M  -Xms1024M  -Ddd.service.name=aws-ic -Ddd.trace.global.tags=env:${environment} -Ddd.jmxfetch.enabled=TRUE -Dserver.tomcat.max.threads=800
             # Use X-Forwarded-* headers from Ingress to detect end-client information correctly
             - name: SERVER_USE_FORWARD_HEADERS
               value: "true"
@@ -90,14 +90,14 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
             - name: DD_SERVICE_NAME
-              value: "${app-label}"
+              value: "aws-ic"
             - name: DD_PROFILING_ENABLED
               value: "true"
             - name: AWS_STS_REGIONAL_ENDPOINTS
               value: regional
           envFrom:
             - configMapRef:
-                name: ${app-label}-runtime
+                name: aws-ic-runtime
           readinessProbe:
             httpGet:
               path: ${context-path}/actuator/keepalive
