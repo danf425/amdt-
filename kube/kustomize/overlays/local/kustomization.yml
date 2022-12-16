@@ -1,0 +1,14 @@
+bases:
+  - ../../base/
+
+
+images:
+  - name: app-image
+    newName: containerregistry-na.jpmchase.net/container-sandbox/amdt/aws-ic
+
+namespace: default
+
+configMapGenerator:
+  - name: ic-runtime
+    literals:
+      - SPRING_PROFILES_ACTIVE=dev

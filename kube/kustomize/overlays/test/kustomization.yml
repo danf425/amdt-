@@ -1,0 +1,15 @@
+bases:
+  - ../../base/
+
+images:
+  - name: app-image
+    newName: ${containerImageUri}
+
+namespace: ${namespace}
+
+configMapGenerator:
+  - name: ${app-label}-runtime
+    literals:
+      - SPRING_PROFILES_ACTIVE=aws-uat,cloud
+      - APP_FLAGS=-Dsun.net.http.allowRestrictedHeaders=true  -Djdk.tls.allowUnsafeServerCertChange=true -Dsun.security.ssl.allowUnsafeRenegotiation=true -Dserver.servlet.context-path=${context-path}
+

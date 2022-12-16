@@ -1,0 +1,43 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: <+pipeline.stages.DeployDEV.variables.app_label>
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: <+pipeline.stages.DeployDEV.variables.cluster_host_apache>
+      http:
+        paths:
+          - path: <+pipeline.stages.DeployDEV.variables.context_path>
+            pathType: "Prefix"
+            backend:
+              service:
+                name: <+pipeline.stages.DeployDEV.variables.app_label>
+                port:
+                  number: 80
+    - host: <+pipeline.stages.DeployDEV.variables.cluster_host_global>
+      http:
+        paths:
+          - path: <+pipeline.stages.DeployDEV.variables.context_path>
+            pathType: "Prefix"
+            backend:
+              service:
+                name: <+pipeline.stages.DeployDEV.variables.app_label>
+                port:
+                  number: 80
+    - host: <+pipeline.stages.DeployDEV.variables.cluster_host_blue_green>
+      http:
+        paths:
+          - path: <+pipeline.stages.DeployDEV.variables.context_path>
+            pathType: "Prefix"
+            backend:
+              service:
+                name: <+pipeline.stages.DeployDEV.variables.app_label>
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - <+pipeline.stages.DeployDEV.variables.cluster_host_global>
+        - <+pipeline.stages.DeployDEV.variables.cluster_host_blue_green>
+

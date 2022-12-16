@@ -1,0 +1,43 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ${app-label}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: ${cluster-host-apache}
+      http:
+        paths:
+          - path: ${context-path}
+            pathType: "Prefix"
+            backend:
+              service:
+                name: ${app-label}
+                port:
+                  number: 80
+    - host: ${cluster-host-global}
+      http:
+        paths:
+          - path: ${context-path}
+            pathType: "Prefix"
+            backend:
+              service:
+                name: ${app-label}
+                port:
+                  number: 80
+    - host: ${cluster-host-blue-green}
+      http:
+        paths:
+          - path: ${context-path}
+            pathType: "Prefix"
+            backend:
+              service:
+                name: ${app-label}
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - ${cluster-host-global}
+        - ${cluster-host-blue-green}
+
